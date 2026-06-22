@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi-robot coordination</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #0b0f14;
+        color: #cbd5e1;
+        font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+        padding: 24px;
+      }
+      canvas {
+        border: 1px solid #1e293b;
+        border-radius: 6px;
+        display: block;
+      }
+      .panel {
+        width: 240px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      h1 {
+        font-size: 15px;
+        margin: 0;
+        color: #e2e8f0;
+        font-weight: 600;
+      }
+      .sub {
+        margin: -10px 0 0;
+        color: #64748b;
+        font-size: 12px;
+      }
+      .control label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        color: #94a3b8;
+      }
+      input[type="range"] {
+        width: 100%;
+        accent-color: #5eead4;
+      }
+      input[type="number"] {
+        width: 100%;
+        background: #111722;
+        border: 1px solid #1e293b;
+        color: #cbd5e1;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font: inherit;
+      }
+      .btns {
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        flex: 1;
+        background: #111722;
+        border: 1px solid #1e293b;
+        color: #cbd5e1;
+        padding: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font: inherit;
+      }
+      button:hover {
+        border-color: #5eead4;
+        color: #5eead4;
+      }
+      .stats {
+        border-top: 1px solid #1e293b;
+        padding-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px 12px;
+      }
+      .stats span:nth-child(odd) {
+        color: #64748b;
+      }
+      .stats span:nth-child(even) {
+        color: #e2e8f0;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="scene" width="800" height="600"></canvas>
+    <div class="panel">
+      <h1>Multi-robot coordination</h1>
+      <p class="sub">
+        Consensus-based auction (CBAA). Robots bid on tasks and exchange bids only
+        with neighbours in comm range. Conflicts resolve by consensus. No central
+        planner. Drop the comm range and watch conflicts spike, then clear.
+      </p>
+
+      <div class="control">
+        <label>robots <span id="robots-val">18</span></label>
+        <input id="robots" type="range" min="5" max="50" value="18" />
+      </div>
+
+      <div class="control">
+        <label>speed <span id="speed-val">1.8</span></label>
+        <input id="speed" type="range" min="0.5" max="4" step="0.1" value="1.8" />
+      </div>
+
+      <div class="control">
+        <label>comm range <span id="comm-val">180</span></label>
+        <input id="comm" type="range" min="20" max="900" step="10" value="180" />
+      </div>
+
+      <div class="control">
+        <label>seed</label>
+        <input id="seed" type="number" value="1" />
+      </div>
+
+      <div class="btns">
+        <button id="pause">Pause</button>
+        <button id="reset">Reset</button>
+      </div>
+
+      <div class="stats">
+        <span>robots</span><span id="s-robots">0</span>
+        <span>open tasks</span><span id="s-open">0</span>
+        <span>completed</span><span id="s-done">0</span>
+        <span>tasks / 100t</span><span id="s-tput">0</span>
+        <span>conflicts</span><span id="s-conf">0</span>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
